@@ -10,3 +10,9 @@ def hello(task_id):
         'status': 'In Queue'
     }
     return jsonify(result)
+
+
+@app.route('/task/', methods=['POST'])
+def create_task():
+    task_id = 123456
+    return jsonify(task_id), 201, {'location': '/task/{}'.format(task_id)}
