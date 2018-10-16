@@ -1,4 +1,6 @@
 from flask import Flask, jsonify
+from database.common import execute
+from database.queries import CREATE_TASK
 
 app = Flask(__name__)
 
@@ -14,5 +16,7 @@ def hello(task_id):
 
 @app.route('/task/', methods=['POST'])
 def create_task():
-    task_id = 123456
-    return jsonify(task_id), 201, {'location': '/task/{}'.format(task_id)}
+    """ Create a new task in the database and return its id """
+    result = execute(CREATE_TASK)
+    task_id = result['id']
+    return jsonify(task_id), 201, {'location': f'/task/{task_id}'}
