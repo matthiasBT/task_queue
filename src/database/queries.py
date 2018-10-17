@@ -4,7 +4,7 @@ CREATE_TASK = """
     RETURNING ID;
 """
 
-RETRIEVE_TASK = """
+INSPECT_TASK = """
     SELECT *
     FROM TASKS
     WHERE ID = %s

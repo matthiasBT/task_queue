@@ -56,8 +56,12 @@ def get_db_cursor():
         cursor.close()
 
 
-def execute(query):
+def execute(query, args=None):
+    """ Execute a query and return the result """
     with get_db_cursor() as cursor:
-        cursor.execute(query)
+        if args:
+            cursor.execute(query, args)
+        else:
+            cursor.execute(query)
         # in this app all queries operate on single rows
         return cursor.fetchone()
