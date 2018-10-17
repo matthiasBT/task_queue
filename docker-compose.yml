@@ -1,0 +1,14 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "80:5000"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    volumes:
+      - ./src/database/dbinit.sql:/docker-entrypoint-initdb.d/init.sql

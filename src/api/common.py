@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
-from database.common import execute
-from database.queries import CREATE_TASK
+from src.database.common import execute
+from src.database.queries import CREATE_TASK
 
 app = Flask(__name__)
 
