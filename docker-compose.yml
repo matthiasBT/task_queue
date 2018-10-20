@@ -14,3 +14,6 @@ services:
       - POSTGRES_PASSWORD=mysecretpassword
     volumes:
       - ./src/database/dbinit.sql:/docker-entrypoint-initdb.d/init.sql
+  worker:
+    build: .
+    command: python3.7 src/worker.py
