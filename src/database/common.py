@@ -63,7 +63,7 @@ def get_db_cursor(connection):
             yield from get_cursor(conn)
 
 
-def execute(query, params=None, connection=None, logger=None):
+def execute(query, params=None, connection=None, logger=None, fetch=True):
     """ Execute a query and return the result """
     with get_db_cursor(connection) as cursor:
         if params:
@@ -73,4 +73,5 @@ def execute(query, params=None, connection=None, logger=None):
         if logger:
             logger.info(cursor.query.decode())
         # in this app all queries operate on single rows
-        return cursor.fetchone()
+        if fetch:
+            return cursor.fetchone()

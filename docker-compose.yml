@@ -17,3 +17,5 @@ services:
   worker:
     build: .
     command: python3.7 src/worker.py
+    depends_on:
+      - postgres

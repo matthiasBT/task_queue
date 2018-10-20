@@ -2,16 +2,15 @@ from concurrent.futures import ThreadPoolExecutor
 import time
 import random
 from database.common import execute, get_conn
-from database.queries import TAKE_TASK, RUN_TASK_OR_GIVE_AWAY, FINISH_TASK
+from database.queries import TAKE_TASK, RUN_TASK, FINISH_TASK
 from logger import get_logger
 
-LOGGER_NAME = 'worker'
-LOGGER = get_logger(LOGGER_NAME)
+LOGGER_NAME_PREFIX = 'worker-{}'
 
 WORKERS_CNT = 2
 TEST_TASK_SLEEP_MIN = 0
 TEST_TASK_SLEEP_MAX = 10
-NO_TASKS_TIMEOUT = 5
+NO_TASKS_TIMEOUT = 10
 
 
 def test_task():
@@ -21,17 +20,21 @@ def test_task():
 
 def worker(worker_id):
     """ Main worker function. Takes tasks from the queue and executes them """
-    LOGGER.info(f'Worker {worker_id} launched')
+    logger = get_logger(LOGGER_NAME_PREFIX.format(worker_id))
+    logger.info(f'Worker {worker_id} launched')
     while True:
         with get_conn() as connection:
-            task_row = execute(TAKE_TASK, connection=connection, logger=LOGGER)
+            task_row = execute(TAKE_TASK, connection=connection, logger=logger)
             if not task_row:
                 time.sleep(NO_TASKS_TIMEOUT)
                 continue
 
-            LOGGER.info(f'Task {task_row["id"]} taken by worker {worker_id}')
+            task_id = task_row['id']
+            execute(RUN_TASK, (task_id, ), connection=connection, logger=logger, fetch=False)
+            logger.info(f'Task {task_id} was taken by worker {worker_id}')
             test_task()
-            LOGGER.info(f'Task {task_row["id"]} finished')
+            execute(FINISH_TASK, (task_id, ), connection=connection, logger=logger, fetch=False)
+            logger.info(f'Task {task_id} finished')
 
 
 def main():

@@ -19,10 +19,9 @@ TAKE_TASK = """
     LIMIT 1;
 """
 
-# now() or null
-RUN_TASK_OR_GIVE_AWAY = """
+RUN_TASK = """
     UPDATE TASKS
-    SET START_TIME = %s
+    SET START_TIME = NOW()
     WHERE ID = %s;
 """
 
