@@ -4,8 +4,10 @@ import random
 import threading
 from database.common import execute
 from database.queries import TAKE_TASK, RUN_TASK_OR_GIVE_AWAY, FINISH_TASK
-from logger import LOGGER
+from logger import get_logger
 
+LOGGER_NAME = 'worker'
+LOGGER = get_logger(LOGGER_NAME)
 
 WORKERS_CNT = 2
 TEST_TASK_SLEEP_MIN = 0

@@ -1,7 +1,10 @@
 from flask import Flask, jsonify
 from src.database.common import execute
 from src.database.queries import CREATE_TASK, INSPECT_TASK
-from src.logger import LOGGER
+from src.logger import get_logger
+
+LOGGER_NAME = 'rest_api'
+LOGGER = get_logger(LOGGER_NAME)
 
 app = Flask(__name__)
 
