@@ -11,10 +11,12 @@ INSPECT_TASK = """
 """
 
 # preventing race conditions via "SKIP LOCKED"
+# fair task execution order is provided via "ORDER BY ID"
 TAKE_TASK = """
     SELECT ID
     FROM TASKS
     WHERE START_TIME IS NULL
+    ORDER BY ID
     FOR UPDATE SKIP LOCKED
     LIMIT 1;
 """
