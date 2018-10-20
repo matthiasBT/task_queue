@@ -9,7 +9,7 @@ LOGGER = get_logger(LOGGER_NAME)
 app = Flask(__name__)
 
 
-@app.route('/task/<int:task_id>')
+@app.route('/tasks/<int:task_id>')
 def inspect_task(task_id):
     """ Return information about a task's status """
     task_row = execute(INSPECT_TASK, (task_id, ), logger=LOGGER)
@@ -23,7 +23,7 @@ def inspect_task(task_id):
     return jsonify(result)
 
 
-@app.route('/task/', methods=['POST'])
+@app.route('/tasks/', methods=['POST'])
 def create_task():
     """ Create a new task in the database and return its id """
     result = execute(CREATE_TASK, logger=LOGGER)
