@@ -3,6 +3,7 @@ from psycopg2.extras import RealDictCursor
 from psycopg2 import OperationalError
 from contextlib import contextmanager
 from time import sleep
+from src.logger import LOGGER
 
 DB_HOST = 'postgres'
 DB_PORT = 5432
@@ -63,5 +64,6 @@ def execute(query, args=None):
             cursor.execute(query, args)
         else:
             cursor.execute(query)
+        LOGGER.info(cursor.query.decode())
         # in this app all queries operate on single rows
         return cursor.fetchone()
