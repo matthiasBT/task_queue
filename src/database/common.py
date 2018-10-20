@@ -44,6 +44,7 @@ CONN_POOL = get_pool()
 def get_conn():
     connection = CONN_POOL.getconn()
     yield connection
+    connection.commit()
     CONN_POOL.putconn(connection)
 
 
@@ -52,7 +53,6 @@ def get_db_cursor():
     with get_conn() as conn:
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         yield cursor
-        conn.commit()
         cursor.close()
 
 
