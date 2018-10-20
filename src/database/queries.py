@@ -10,11 +10,13 @@ INSPECT_TASK = """
     WHERE ID = %s
 """
 
+# preventing race conditions via "SKIP LOCKED"
 TAKE_TASK = """
     SELECT ID
     FROM TASKS
     WHERE START_TIME IS NULL
-    FOR UPDATE SKIP LOCKED;  -- preventing race conditions
+    FOR UPDATE SKIP LOCKED
+    LIMIT 1;
 """
 
 # now() or null

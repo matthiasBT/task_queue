@@ -48,19 +48,26 @@ def get_conn():
     CONN_POOL.putconn(connection)
 
 
+def get_cursor(connection):
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    yield cursor
+    cursor.close()
+
+
 @contextmanager
-def get_db_cursor():
-    with get_conn() as conn:
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
-        yield cursor
-        cursor.close()
+def get_db_cursor(connection):
+    if connection is not None:
+        yield from get_cursor(connection)
+    else:
+        with get_conn() as conn:
+            yield from get_cursor(conn)
 
 
-def execute(query, args=None, logger=None):
+def execute(query, params=None, connection=None, logger=None):
     """ Execute a query and return the result """
-    with get_db_cursor() as cursor:
-        if args:
-            cursor.execute(query, args)
+    with get_db_cursor(connection) as cursor:
+        if params:
+            cursor.execute(query, params)
         else:
             cursor.execute(query)
         if logger:
