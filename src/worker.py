@@ -31,10 +31,14 @@ def worker(worker_id):
 
             task_id = task_row['id']
             execute(RUN_TASK, (task_id, ), connection=connection, logger=logger, fetch=False)
-            logger.info(f'Task {task_id} was taken by worker {worker_id}')
-            test_task()
+
+        logger.info(f'Task {task_id} was taken by worker {worker_id}')
+        test_task()
+
+        with get_conn() as connection:
             execute(FINISH_TASK, (task_id, ), connection=connection, logger=logger, fetch=False)
-            logger.info(f'Task {task_id} finished')
+
+        logger.info(f'Task {task_id} finished')
 
 
 def main():
