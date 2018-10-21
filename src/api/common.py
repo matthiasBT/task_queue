@@ -28,7 +28,7 @@ def create_task():
     """ Create a new task in the database and return its id """
     result = execute(CREATE_TASK, logger=LOGGER)
     task_id = result['id']
-    return jsonify(task_id), 201, {'location': f'/task/{task_id}'}
+    return jsonify(task_id), 201, {'location': f'/tasks/{task_id}'}
 
 
 def task_status(task_row):
