@@ -4,8 +4,13 @@ CREATE_TASK = """
     RETURNING ID;
 """
 
+# cast to TEXT type is necessary because INTERVAL type is not JSON serializable
 INSPECT_TASK = """
-    SELECT *
+    SELECT
+        CREATE_TIME,
+        START_TIME,
+        EXEC_TIME,
+        (EXEC_TIME - START_TIME)::TEXT AS TIME_TO_EXECUTE
     FROM TASKS
     WHERE ID = %s
 """

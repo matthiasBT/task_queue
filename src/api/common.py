@@ -17,8 +17,10 @@ def inspect_task(task_id):
         return jsonify('Task not found'), 404
 
     result = {
-        'task_id': task_row['id'],
-        'status': task_status(task_row)
+        'status': task_status(task_row),
+        'create_time': task_row['create_time'],
+        'start_time': task_row['start_time'],
+        'time_to_execute': task_row['time_to_execute'],
     }
     return jsonify(result)
 
