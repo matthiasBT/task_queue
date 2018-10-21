@@ -9,7 +9,7 @@ LOGGER = get_logger(LOGGER_NAME)
 app = Flask(__name__)
 
 
-@app.route('/tasks/<int:task_id>')
+@app.route('/tasks/<int:task_id>/')
 def inspect_task(task_id):
     """ Return information about a task's status """
     task_row = execute(INSPECT_TASK, (task_id, ), logger=LOGGER)
