@@ -2,7 +2,11 @@
 Simple task queue written in Python
 
 Start the service:  
-```docker-compose up```
+```
+git clone https://github.com/matthiasBT/task_queue.git
+cd task_queue
+docker-compose up
+```
 
 Create a new task:  
 ```curl -X POST http://localhost/tasks/```
